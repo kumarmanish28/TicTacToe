@@ -10,7 +10,6 @@ import org.mktech.tictactoe.models.GameState
 import org.mktech.tictactoe.models.MakeTurn
 
 class TicTacToeViewModel(private val client: RealTimeMessagingClient) : ViewModel() {
-
     val state = client
         .getGameStateStream()
         .onStart { _isConnecting.value = true }

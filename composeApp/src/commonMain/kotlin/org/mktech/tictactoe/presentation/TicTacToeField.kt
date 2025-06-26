@@ -1,6 +1,8 @@
 package org.mktech.tictactoe.presentation
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,6 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.mktech.tictactoe.models.GameState
@@ -23,22 +26,36 @@ fun TicTacToeField(
     playerOColor: Color = Color.Red
 ) {
 
-    Canvas(modifier = modifier) {
+    Canvas(
+        modifier = modifier
+            .pointerInput(true) {
+                detectTapGestures {
+                    val x = (3 * it.x.toInt()) / size.width
+                    val y = (3 * it.y.toInt()) / size.height
+                    onTapInField(x, y)
+                }
+            }) {
         drawField()
-        drawX(
-            color = playerXColor,
-            center = Offset(
-                x = size.width * (1 / 6f),
-                y = size.height * (1 / 6f)
-            )
-        )
-        drawO(
-            color = playerOColor,
-            center = Offset(
-                x = size.width * (3 / 6f),
-                y = size.height * (3 / 6f)
-            )
-        )
+        state.field.forEachIndexed { y, _ ->
+            state.field[y].forEachIndexed { x, player ->
+                val offSet = Offset(
+                    x = x * size.width * (1 / 3f) + size.width / 6f,
+                    y = y * size.height * (1 / 3f) + size.height / 6f
+                )
+
+                if (player == 'X') {
+                    drawX(
+                        color = playerXColor,
+                        center = offSet
+                    )
+                } else if (player == 'O') {
+                    drawO(
+                        color = playerOColor,
+                        center = offSet
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -137,8 +154,8 @@ fun TicTacToeFieldPreview() {
         state = GameState(
             field = arrayOf(
                 arrayOf('X', null, null),
-                arrayOf('X', null, 'X'),
-                arrayOf('X', 'O', null),
+                arrayOf(null, 'O', 'O'),
+                arrayOf(null, null, null),
             )
         ),
         onTapInField = { _, _ -> }
