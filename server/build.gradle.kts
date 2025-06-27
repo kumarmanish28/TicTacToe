@@ -13,7 +13,6 @@ application {
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
-
 dependencies {
     implementation(projects.shared)
     implementation(libs.ktor.server.call.logging)
@@ -26,4 +25,13 @@ dependencies {
     implementation(libs.ktor.server.config.yaml)
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.testJunit)
+}
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["Main-Class"] = "org.mktech.tictactoe.ApplicationKt"
+    }
+    // Include all dependencies (for fat JAR)
+    from(configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) })
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
