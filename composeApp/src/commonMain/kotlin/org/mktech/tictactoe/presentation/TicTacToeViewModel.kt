@@ -3,7 +3,13 @@ package org.mktech.tictactoe.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.ktor.client.network.sockets.ConnectTimeoutException
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import org.mktech.tictactoe.data.RealTimeMessagingClient
 import org.mktech.tictactoe.models.GameState
@@ -34,6 +40,7 @@ class TicTacToeViewModel(private val client: RealTimeMessagingClient) : ViewMode
 
     override fun onCleared() {
         super.onCleared()
+        print("onCleared1111111111111111111111111111111111111111111111111111111111")
         viewModelScope.launch {
             client.close()
         }

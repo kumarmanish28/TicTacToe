@@ -11,6 +11,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -21,13 +22,13 @@ import androidx.compose.ui.unit.sp
 import org.koin.compose.koinInject
 
 @Composable
-fun GameScreen(viewmodel: TicTacToeViewModel = koinInject()) {
+fun GameScreen(modifier: Modifier, viewmodel: TicTacToeViewModel = koinInject()) {
     val state by viewmodel.state.collectAsState()
     val isConnecting by viewmodel.isConnecting.collectAsState()
     val isShowConnectionError by viewmodel.isShowConnectionError.collectAsState()
 
     if (isShowConnectionError) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(
                 text = "Couldn't connect to the server",
                 fontSize = 18.sp,
@@ -36,7 +37,7 @@ fun GameScreen(viewmodel: TicTacToeViewModel = koinInject()) {
         }
         return
     }
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier
                 .padding(top = 32.dp)
@@ -81,7 +82,7 @@ fun GameScreen(viewmodel: TicTacToeViewModel = koinInject()) {
 
         if (isConnecting) {
             Box(
-                modifier = Modifier.fillMaxSize()
+                modifier = modifier.fillMaxSize()
                     .background(Color.White),
                 contentAlignment = Alignment.Center
             ) {
@@ -89,4 +90,5 @@ fun GameScreen(viewmodel: TicTacToeViewModel = koinInject()) {
             }
         }
     }
+
 }

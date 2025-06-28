@@ -12,3 +12,11 @@ val commonModule = module {
     single<RealTimeMessagingClient> { KtorRealTimeMessagingClient(get()) }
     viewModel { TicTacToeViewModel(get()) }
 }
+
+fun initializeKoin() {
+    startKoin {
+        modules(
+            commonModule
+        )
+    }
+}

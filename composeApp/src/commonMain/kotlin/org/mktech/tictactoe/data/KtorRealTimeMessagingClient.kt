@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.serialization.json.Json
 import org.mktech.tictactoe.models.GameState
 import org.mktech.tictactoe.models.MakeTurn
+import org.mktech.tictactoe.utils.MyConstants
 
 class KtorRealTimeMessagingClient(
     private val client: HttpClient
@@ -26,7 +27,7 @@ class KtorRealTimeMessagingClient(
     override fun getGameStateStream(): Flow<GameState> {
         return flow {
             session = client.webSocketSession {
-                url("ws://192.168.1.36:8085/play")
+                url(MyConstants.BASE_URL)
             }
 
             val gameState = session!!

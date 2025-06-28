@@ -55,6 +55,7 @@ kotlin {
             implementation(libs.bundles.ktor)
 
             implementation(libs.koin.compose)
+            implementation(libs.jetbrains.compose.navigation)
             implementation(libs.koin.compose.viewmodel)
             api(libs.koin.core)
 
