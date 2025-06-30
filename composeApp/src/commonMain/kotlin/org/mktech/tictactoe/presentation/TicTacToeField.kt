@@ -2,28 +2,40 @@ package org.mktech.tictactoe.presentation
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.drawscope.DrawStyle
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.mktech.tictactoe.models.GameState
+import org.mktech.tictactoe.theme.buttonColor
+import org.mktech.tictactoe.theme.dialogColor
+import org.mktech.tictactoe.theme.oColor
+import org.mktech.tictactoe.theme.primary
+import org.mktech.tictactoe.theme.xColor
 
 @Composable
 fun TicTacToeField(
     modifier: Modifier,
     state: GameState,
     onTapInField: (x: Int, y: Int) -> Unit,
-    playerXColor: Color = Color.Green,
-    playerOColor: Color = Color.Red
+    playerXColor: Color = xColor,
+    playerOColor: Color = oColor
 ) {
 
     Canvas(
@@ -62,14 +74,14 @@ fun TicTacToeField(
 private fun DrawScope.drawO(
     color: Color,
     center: Offset,
-    size: Size = Size(50.dp.toPx(), 50.dp.toPx())
+    size: Size = Size(45.dp.toPx(), 45.dp.toPx())
 ) {
     drawCircle(
         color = color,
         radius = size.width / 2f,
         center = center,
         style = Stroke(
-            width = 3.dp.toPx()
+            width = 6.dp.toPx()
         )
     )
 }
@@ -77,9 +89,8 @@ private fun DrawScope.drawO(
 private fun DrawScope.drawX(
     color: Color,
     center: Offset,
-    size: Size = Size(50.dp.toPx(), 50.dp.toPx())
+    size: Size = Size(40.dp.toPx(), 40.dp.toPx())
 ) {
-
     drawLine(
         color = color,
         start = Offset(
@@ -90,7 +101,7 @@ private fun DrawScope.drawX(
             x = center.x + size.width / 2f,
             y = center.y + size.height / 2f
         ),
-        strokeWidth = 3.dp.toPx(),
+        strokeWidth = 6.dp.toPx(),
         cap = StrokeCap.Round
     )
     drawLine(
@@ -103,48 +114,96 @@ private fun DrawScope.drawX(
             x = center.x + size.width / 2f,
             y = center.y - size.height / 2f
         ),
-        strokeWidth = 3.dp.toPx(),
+        strokeWidth = 6.dp.toPx(),
         cap = StrokeCap.Round
     )
 }
 
 private fun DrawScope.drawField() {
-    //1st vertical line
+    // 🌈 Draw gradient background first
+    drawRoundRect(
+        brush = Brush.radialGradient(
+            colors = listOf(primary, buttonColor),
+            center = center,
+            radius = size.minDimension * 2.5f
+        ),
+        size = size,
+        cornerRadius = CornerRadius(12.dp.toPx(), 12.dp.toPx()),
+    )
+
+    val stroke = 1.dp.toPx()
+    val verticalMargin = 1.5.dp.toPx()     // margin from top and bottom
+    val horizontalMargin = 1.5.dp.toPx()   // margin from left and right
+
+
+    // 🟦 Border lines (Top, Left, Bottom, Right)
+    /*  drawLine(
+          color = buttonColor,
+          start = Offset(0f, 0f),
+          end = Offset(size.width, 0f),
+          strokeWidth = stroke,
+          cap = StrokeCap.Round
+      )
+
+      drawLine(
+          color = buttonColor,
+          start = Offset(0f, 0f),
+          end = Offset(0f, size.height),
+          strokeWidth = stroke,
+          cap = StrokeCap.Round
+      )
+
+      drawLine(
+          color = buttonColor,
+          start = Offset(0f, size.height),
+          end = Offset(size.width, size.height),
+          strokeWidth = stroke,
+          cap = StrokeCap.Round
+      )
+
+      drawLine(
+          color = buttonColor,
+          start = Offset(size.width, 0f),
+          end = Offset(size.width, size.height),
+          strokeWidth = stroke,
+          cap = StrokeCap.Round
+      )*/
+
+    // 🧩 Grid lines (Vertical)
     drawLine(
-        color = Color.Black,
-        start = Offset(size.width * 0.33f, 0f),
-        end = Offset(size.width * 0.33f, size.height),
-        strokeWidth = 3.dp.toPx(),
+        color = buttonColor,
+        start = Offset(size.width * 0.33f, verticalMargin),
+        end = Offset(size.width * 0.33f, size.height - verticalMargin),
+        strokeWidth = stroke,
         cap = StrokeCap.Round
     )
 
-    //2st vertical line
     drawLine(
-        color = Color.Black,
-        start = Offset(size.width * 0.66f, 0f),
-        end = Offset(size.width * 0.66f, size.height),
-        strokeWidth = 3.dp.toPx(),
+        color = buttonColor,
+        start = Offset(size.width * 0.66f, verticalMargin),
+        end = Offset(size.width * 0.66f, size.height - verticalMargin),
+        strokeWidth = stroke,
         cap = StrokeCap.Round
     )
 
-    //1st horizontal line
+    // 🧩 Grid lines (Horizontal)
     drawLine(
-        color = Color.Black,
-        start = Offset(0f, size.height * 0.33f),
-        end = Offset(size.width, size.height * 0.33f),
-        strokeWidth = 3.dp.toPx(),
+        color = buttonColor,
+        start = Offset(horizontalMargin, size.height * 0.33f),
+        end = Offset(size.width - horizontalMargin, size.height * 0.33f),
+        strokeWidth = stroke,
         cap = StrokeCap.Round
     )
 
-    //2st horizontal line
     drawLine(
-        color = Color.Black,
-        start = Offset(0f, size.height * 0.66f),
-        end = Offset(size.width, size.height * 0.66f),
-        strokeWidth = 3.dp.toPx(),
+        color = buttonColor,
+        start = Offset(horizontalMargin, size.height * 0.66f),
+        end = Offset(size.width - horizontalMargin, size.height * 0.66f),
+        strokeWidth = stroke,
         cap = StrokeCap.Round
     )
 }
+
 
 @Preview()
 @Composable

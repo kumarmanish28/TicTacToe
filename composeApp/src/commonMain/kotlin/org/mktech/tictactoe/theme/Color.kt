@@ -1,28 +1,17 @@
 package org.mktech.tictactoe.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
-val freshColor = Color(0xFF44FF78)
-val staleColor = Color(0xFFFF9E44)
+val Purple80 = Color(0xFFD0BCFF)
+val PurpleGrey80 = Color(0xFFCCC2DC)
+val Pink80 = Color(0xFFEFB8C8)
 
-val primaryColor
-    @Composable
-    get() = if(isSystemInDarkTheme()) Color(0xFF86A8FC) else Color(0xFF283556)
-
-
-val headerColor
-    @Composable
-    get() = if(isSystemInDarkTheme()) Color(0xFF0C0C0C) else Color(0xFF283556)
-
-
-val surfaceColor
-    @Composable
-    get() = if(isSystemInDarkTheme()) Color(0xFF161616) else Color(0xFFFFFFFF)
-
-
-val textColor
-    @Composable
-    get() = if(isSystemInDarkTheme()) Color(0xFFFFFFFF) else Color(0xFF000000)
-
+val Purple40 = Color(0xFF6650a4)
+val PurpleGrey40 = Color(0xFF625b71)
+val Pink40 = Color(0xFF7D5260)
+val primary = Color(0xFF081F20)
+val buttonColor = Color(0xFFF7CE8B)
+val textColor = Color(0xFFF7CE8B)
+val dialogColor = Color(0xFF0B2526)
+val xColor = Color(0xFF759116)
+val oColor = Color(0xFFbf1029)

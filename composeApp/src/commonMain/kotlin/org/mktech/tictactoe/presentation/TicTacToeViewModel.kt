@@ -40,7 +40,7 @@ class TicTacToeViewModel(private val client: RealTimeMessagingClient) : ViewMode
 
     override fun onCleared() {
         super.onCleared()
-        print("onCleared1111111111111111111111111111111111111111111111111111111111")
+//        print("onCleared1111111111111111111111111111111111111111111111111111111111")
         viewModelScope.launch {
             client.close()
         }
